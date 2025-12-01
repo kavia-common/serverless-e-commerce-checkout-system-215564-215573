@@ -2,11 +2,14 @@ from flask import Flask
 from flask_cors import CORS
 from flask_smorest import Api
 
-from .routes.health import blp
+from .routes.health import blp as health_blp
+from .routes.catalog import blp as catalog_blp
+from .routes.checkout import blp as checkout_blp
 from .db import init_db
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+# CORS configuration: allow all origins for demo; in production restrict to frontend domain
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # OpenAPI / API Docs metadata
@@ -24,4 +27,6 @@ api = Api(app)
 init_db(create_all=True)
 
 # Register routes
-api.register_blueprint(blp)
+api.register_blueprint(health_blp)
+api.register_blueprint(catalog_blp)
+api.register_blueprint(checkout_blp)

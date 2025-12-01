@@ -4,10 +4,15 @@ Inventory backend (Flask) - Quick Start
 
 1) Install dependencies
    cd inventory_backend
+   python3 -m venv .venv
+   . .venv/bin/activate
    pip install --no-input --upgrade pip
    pip install --no-input -r requirements.txt
 
 Note: requirements.txt already includes flask-cors (correct casing: flask-cors). If you encounter an ImportError for flask_cors, ensure you installed requirements in the active virtual environment.
+
+Preview/CI one-liner:
+   cd inventory_backend && bash start_server.sh
 
 2) Start the server (preferred)
    python run.py

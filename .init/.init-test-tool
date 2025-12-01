@@ -1,0 +1,4 @@
+{
+    "command": "pytest",
+    "working_directory": "/home/kavia/workspace/code-generation/serverless-e-commerce-checkout-system-215564-215573/inventory_backend"
+}

@@ -3,6 +3,7 @@ from flask.views import MethodView
 
 blp = Blueprint("Health", "health", url_prefix="/", description="Health check route")
 
+
 @blp.route("/")
 class HealthCheck(MethodView):
     """PUBLIC_INTERFACE: Simple health probe endpoint returning 200 OK with a JSON payload."""

@@ -5,6 +5,7 @@ from typing import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker, DeclarativeBase
 
+
 # PUBLIC_INTERFACE
 class Base(DeclarativeBase):
     """Base class for SQLAlchemy models used across the application."""

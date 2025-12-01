@@ -25,6 +25,7 @@ blp = Blueprint(
     description="Checkout session creation and Stripe webhook handling",
 )
 
+
 def _get_stripe_client():
     """Create and return the Stripe client configured from env."""
     if stripe is None:
@@ -35,10 +36,12 @@ def _get_stripe_client():
     stripe.api_key = secret_key
     return stripe
 
+
 def _get_site_url() -> str:
     """Resolve site URL for redirect success/cancel."""
     # The orchestrator will set SITE_URL in env; fallback to localhost for dev.
     return os.getenv("SITE_URL", "http://localhost:3000")
+
 
 def _build_line_items(items: List[Dict]) -> List[Dict]:
     """Build Stripe line_items verifying product, price, and inventory."""
@@ -66,6 +69,7 @@ def _build_line_items(items: List[Dict]) -> List[Dict]:
                 },
             })
     return line_items
+
 
 @blp.route("/checkout/session")
 class CheckoutSession(MethodView):
@@ -141,6 +145,7 @@ class CheckoutSession(MethodView):
             s.add(order)
         return {"checkout_session_id": session.id, "checkout_url": session.url}, 201
 
+
 @blp.route("/webhooks/stripe", methods=["POST"])
 class StripeWebhook(MethodView):
     """
@@ -197,7 +202,11 @@ class StripeWebhook(MethodView):
                     s.add(order)
                     # decrement inventory
                     for item in order.items:
-                        inv = s.execute(select(Inventory).where(Inventory.product_id == item.product_id)).scalars().first()
+                        inv = s.execute(
+                            select(Inventory).where(
+                                Inventory.product_id == item.product_id
+                            )
+                        ).scalars().first()
                         if inv:
                             inv.quantity = max(0, inv.quantity - item.quantity)
                             s.add(inv)
@@ -207,7 +216,9 @@ class StripeWebhook(MethodView):
             session_id = data_obj.get("id") or data_obj.get("checkout_session")
             with session_scope() as s:
                 order = s.execute(
-                    select(Order).where(Order.stripe_checkout_session_id == session_id)
+                    select(Order).where(
+                        Order.stripe_checkout_session_id == session_id
+                    )
                 ).scalars().first()
                 if order:
                     order.status = "canceled"

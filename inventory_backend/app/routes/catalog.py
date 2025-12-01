@@ -12,6 +12,7 @@ blp = Blueprint(
     description="Product catalog and inventory management",
 )
 
+
 @blp.route("/products")
 class ProductsList(MethodView):
     """
@@ -25,6 +26,7 @@ class ProductsList(MethodView):
         with session_scope() as s:
             products = s.execute(select(Product).where(Product.active == True)).scalars().all()  # noqa: E712
             return products
+
 
 @blp.route("/products/<int:product_id>")
 class ProductDetail(MethodView):
@@ -41,6 +43,7 @@ class ProductDetail(MethodView):
             if not product or not product.active:
                 abort(404, message="Product not found")
             return product
+
 
 @blp.route("/inventory/<int:product_id>")
 class InventoryDetail(MethodView):
